@@ -1,0 +1,18 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\playerScripts\MyStrat2.cs">
+    <Files>
+      <File FileName="Assets\scripts\HexCoordinates.cs" Line="26" Column="2" />
+      <File FileName="Assets\scripts\HexCell.cs" Line="55" Column="1" />
+      <File FileName="Assets\scripts\Game.cs" Line="16" Column="45" />
+      <File FileName="Assets\scripts\HexMesh.cs" Line="54" Column="4" />
+      <File FileName="Assets\scripts\playerScripts\MyStrat.cs" Line="23" Column="29" />
+      <File FileName="Assets\scripts\playerScripts\MyStrat2.cs" Line="9" Column="3" />
+      <File FileName="Assets\scripts\playerScripts\player.cs" Line="6" Column="2" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

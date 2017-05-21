@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: a27eff1c65bc96d4795c04a18c4ca552
+timeCreated: 1495268491
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - cellPrefab: {fileID: 114036377676876268, guid: a9ed037ec82214f41a30a90925f6d823,
+      type: 2}
+  - cellLabelPrefab: {fileID: 114544293293671050, guid: ee914616ff4e9b24db12745204930448,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
