@@ -6,11 +6,6 @@ public abstract class Player
 {
 	public Color color;
 
-	public Player()
-	{
-	}
-
-	public abstract void Strategy(HexCell[] MyCells);
-
+	public abstract Tuple Strategy(HexCell[] MyCells);
 }
 

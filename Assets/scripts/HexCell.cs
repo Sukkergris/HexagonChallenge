@@ -19,17 +19,14 @@ public class HexCell : MonoBehaviour
 		textMesh.transform.Rotate (new Vector3(90f, 0f ,0f));
 		textMesh.text = resources.ToString ();
 	}
-
-	// Use this for initialization
-	void Start () 
-	{
-		
-	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
 		textMesh.text = resources.ToString ();
+		if (resources <= 0) {
+			color = Color.black;
+		}
 	}
 
 	public HexCell[] GetNeighbors()
@@ -40,15 +37,5 @@ public class HexCell : MonoBehaviour
 	public void SetNeighbor (HexCell[] _neighbors)
 	{
 		neighbors = _neighbors;
-	}
-
-	public void TranserResources(int _amount, HexCell toThis)
-	{
-		if (color != toThis.color && toThis.resources < resources) 
-		{
-			resources -= _amount;
-			toThis.resources = _amount;
-			toThis.color = color;
-		}
 	}
 }
