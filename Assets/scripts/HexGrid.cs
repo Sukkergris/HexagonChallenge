@@ -14,14 +14,13 @@ public class HexGrid : MonoBehaviour
 	public Text cellLabelPrefab;
 
 	public HexCell[] cells { get; private set; }
-	Canvas gridCanvas;
 	HexMesh hexMesh;
+
 
 	// Use this for initialization
 	void Awake () {
 		radius = 15;
 		hexMesh = GetComponentInChildren<HexMesh> ();
-		gridCanvas = GetComponentInChildren<Canvas> ();
 		cells = new HexCell[CalculateGridSize(radius)];
 		int i = 0;
 		int rowCount = radius * 2 - 1;
@@ -63,20 +62,24 @@ public class HexGrid : MonoBehaviour
 		}
 	}
 
-	void Start()
+	int CalculateGridSize(int radius)
 	{
-//		InvokeRepeating ("DrawUpdatedCells", 0f, 0.5f);
+		int sum = 0;
+		for (int i = 0; i < radius; i++) 
+		{
+			sum += radius + i;
+		}
+
+		for (int i = 0; i < radius - 1; i++) 
+		{
+			sum += radius + i;
+		}
+		return sum;
 	}
 
 	public void DrawUpdatedCells()
 	{
 		hexMesh.Triangulate (cells);
-	}
-
-	// Update is called once per frame
-	void Update () 
-	{
-		
 	}
 
 	void CreateCell(int x, int z, int i, int colCount)
@@ -92,12 +95,6 @@ public class HexGrid : MonoBehaviour
 		cell.coordinates = HexCoordinates.FromOffSetCoordinates (x, z);
 		cell.color = defaultColor;
 		cell.resources = 1;
-
-//		Text label = Instantiate<Text> (cellLabelPrefab);
-//		label.rectTransform.SetParent (gridCanvas.transform, false);
-//		label.rectTransform.anchoredPosition = new Vector2 (position.x, position.z);
-//		label.text = cell.resources.ToString ();
-//		label.color = Color.white;
 	}
 		
 	HexCell[] neighbors(HexCell cell)
@@ -129,20 +126,5 @@ public class HexGrid : MonoBehaviour
 
 		HexCell[] retVal = tmp.ToArray ();
 		return retVal;
-	}
-
-	int CalculateGridSize(int radius)
-	{
-		int sum = 0;
-		for (int i = 0; i < radius; i++) 
-		{
-			sum += radius + i;
-		}
-
-		for (int i = 0; i < radius - 1; i++) 
-		{
-			sum += radius + i;
-		}
-		return sum;
 	}
 }

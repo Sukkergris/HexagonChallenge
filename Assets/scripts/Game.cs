@@ -7,17 +7,22 @@ public class Game : MonoBehaviour {
 
 	HexGrid grid;
 	HexCell[] cells;
+	ScoreBoard scoreboard;
+	PlayerScoreList playerScores;
 
 	List<Player> players;
-	List<Player> playersToBeRemoved;
+	List<string> playerNames;
 	List<Color> colors;
 
 	void Awake()
 	{
 		grid = GetComponentInChildren<HexGrid> ();
-		players = new List<Player>() { new Sukkergris (), new RandomStrat (), new RandomStrat (), new Sukkergris() };
-		playersToBeRemoved = new List<Player> ();
+		players = new List<Player>() { new RandomStrat (), new PepesDisciples(), new RandomStrat1() };
 		colors = new List<Color> { Color.blue, Color.green, Color.red, Color.magenta };
+		playerNames = new List<string> ();
+		SetPlayerNames ();
+		scoreboard = GameObject.FindObjectOfType<ScoreBoard>();
+		playerScores = GameObject.FindObjectOfType<PlayerScoreList>();
 	}
 
 	// Use this for initialization
@@ -34,13 +39,35 @@ public class Game : MonoBehaviour {
 			cells [rndStartPos].color = player.color;
 		}
 
-		InvokeRepeating ("ExecuteStrategies", 0f, 0.01f);
+		scoreboard.InitializeScoreboard (players);
+		playerScores.SetUp ();
+		InvokeRepeating ("ExecuteStrategies", 0f, 0.001f);
 	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
 
+	private string SetPlayerNamesHelp(string playerName)
+	{
+		int count = 0;
+		foreach (var name in playerNames) 
+		{
+			if (name == playerName) 
+			{
+				count++;
+			}
+		}
+		return string.Format (playerName + " {0}", count);
+	}
+
+	private void SetPlayerNames()
+	{
+		foreach (var player in players) 
+		{
+			if (playerNames.Contains(player.GetType().Name)) 
+			{
+				playerNames.Add (SetPlayerNamesHelp(player.GetType().Name));
+				continue;
+			}
+			playerNames.Add (player.GetType().Name);
+		}
 	}
 
 	private HexCell[] FindPlayerCells(Player player)
@@ -69,10 +96,6 @@ public class Game : MonoBehaviour {
 
 	public void ExecuteStrategies()
 	{
-		foreach (var player in playersToBeRemoved) 
-		{
-			players.Remove (player);
-		}
 		foreach (var player in players) 
 		{
 			AddResourcesToPlayer (player);
@@ -81,12 +104,9 @@ public class Game : MonoBehaviour {
 			{
 				TransferResources (player.Strategy (playerCells));	
 			} 
-			else 
-			{
-				playersToBeRemoved.Add (player);
-			}
 		}
 		grid.DrawUpdatedCells ();
+		TransferScoreBoardResources ();
 	}
 
 	public void TransferResources(Tuple moveInfo)
@@ -117,6 +137,19 @@ public class Game : MonoBehaviour {
 					}
 				}
 			}
+		}
+	}
+
+	public void TransferScoreBoardResources()
+	{
+		foreach (var player in players) 
+		{
+			int resources = 0;
+			foreach (var cell in FindPlayerCells(player)) 
+			{
+				resources += cell.resources;
+			}
+			scoreboard.SetScore (player, resources);
 		}
 	}
 

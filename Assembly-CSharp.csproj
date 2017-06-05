@@ -53,9 +53,12 @@
      <Compile Include="Assets\scripts\HexGrid.cs" />
      <Compile Include="Assets\scripts\HexMesh.cs" />
      <Compile Include="Assets\scripts\HexMetrics.cs" />
+     <Compile Include="Assets\scripts\PlayerScoreList.cs" />
+     <Compile Include="Assets\scripts\ScoreBoard.cs" />
      <Compile Include="Assets\scripts\Tuple.cs" />
+     <Compile Include="Assets\scripts\playerScripts\PepesDisciples.cs" />
      <Compile Include="Assets\scripts\playerScripts\RandomStrat.cs" />
-     <Compile Include="Assets\scripts\playerScripts\Sukkergris.cs" />
+     <Compile Include="Assets\scripts\playerScripts\RandomStrat1.cs" />
      <Compile Include="Assets\scripts\playerScripts\player.cs" />
      <None Include="Assets\materials\HexShader.shader" />
  <Reference Include="UnityEngine.UI">
