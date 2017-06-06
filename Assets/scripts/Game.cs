@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour {
 
@@ -14,15 +15,22 @@ public class Game : MonoBehaviour {
 	List<string> playerNames;
 	List<Color> colors;
 
+	GameObject Timer;
+
+	float timeLeft = 600f;
+	float nextStratCall = 0.0f;
+	float waitPeriod = 0.0001f;
+
 	void Awake()
 	{
 		grid = GetComponentInChildren<HexGrid> ();
-		players = new List<Player>() { new RandomStrat (), new PepesDisciples(), new RandomStrat1() };
+		players = new List<Player>() { new RandomStrat (), new RandomStrat1(), new PepesDisciples(), new PepesDisciples() };
 		colors = new List<Color> { Color.blue, Color.green, Color.red, Color.magenta };
 		playerNames = new List<string> ();
 		SetPlayerNames ();
 		scoreboard = GameObject.FindObjectOfType<ScoreBoard>();
 		playerScores = GameObject.FindObjectOfType<PlayerScoreList>();
+		Timer = GameObject.FindGameObjectWithTag ("Timer");
 	}
 
 	// Use this for initialization
@@ -41,7 +49,32 @@ public class Game : MonoBehaviour {
 
 		scoreboard.InitializeScoreboard (players);
 		playerScores.SetUp ();
-		InvokeRepeating ("ExecuteStrategies", 0f, 0.001f);
+	}
+
+	void Update()
+	{
+		timeLeft -= Time.deltaTime;
+		if (timeLeft <= 0f) 
+		{
+			GameOver ();
+		} 
+		else if (Time.time > nextStratCall) 
+		{
+			if (timeLeft % 60 < 10) {
+				Timer.GetComponent<Text> ().text = "Time left: " + Mathf.Floor(timeLeft/60f).ToString ("F0") + ":" + "0" + (timeLeft % 60f).ToString("F2");	
+			} 
+			else 
+			{
+				Timer.GetComponent<Text> ().text = "Time left: " + Mathf.Floor(timeLeft/60f).ToString ("F0") + ":" + (timeLeft % 60f).ToString("F2");	
+			}
+			nextStratCall += waitPeriod;
+			ExecuteStrategies ();
+		}
+	}
+
+	public void GameOver()
+	{
+		
 	}
 
 	private string SetPlayerNamesHelp(string playerName)
@@ -102,7 +135,13 @@ public class Game : MonoBehaviour {
 			HexCell[] playerCells = FindPlayerCells(player);
 			if (playerCells.Length > 0) 
 			{
-				TransferResources (player.Strategy (playerCells));	
+				try 
+				{
+					TransferResources (player.Strategy (playerCells));		
+				} catch 
+				{
+					scoreboard.ChangeBugs (player, 1);
+				}
 			} 
 		}
 		grid.DrawUpdatedCells ();
@@ -120,6 +159,7 @@ public class Game : MonoBehaviour {
 			{
 				if (a > _to.resources && _from.resources - a > 0) 
 				{
+					UpdateHexagons (_from, _to);
 					_to.color = _from.color;
 					_to.resources = a;
 					_from.resources -= a;
@@ -137,6 +177,35 @@ public class Game : MonoBehaviour {
 					}
 				}
 			}
+		}
+	}
+
+	public void UpdateHexagons(HexCell f, HexCell t)
+	{
+		Player fr = null;
+		Player to = null;
+
+		foreach (var player in players) 
+		{
+			if (player.color == f.color) 
+			{
+				fr = player;
+			}
+			if (player.color == t.color) 
+			{
+				to = player;
+			}
+		}
+
+		if (fr != null && to == null) 
+		{
+			scoreboard.ChangeHexagons (fr, 1);
+		}
+
+		if (fr != null && to != null) 
+		{
+			scoreboard.ChangeHexagons (fr, 1);
+			scoreboard.ChangeHexagons (to, -1);
 		}
 	}
 

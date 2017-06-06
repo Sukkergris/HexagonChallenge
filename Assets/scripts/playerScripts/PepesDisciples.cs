@@ -12,8 +12,7 @@ public class PepesDisciples : Player {
 	public override Tuple Strategy (HexCell[] MyCells)
 	{
 		HexCell[] neighbors;
-		HexCell WeakestEnemy = null;
-		HexCell transferFrom = null;
+		List<Tuple> possibleMoves = new List<Tuple> ();
 
 		foreach (var cell in MyCells) 
 		{
@@ -21,26 +20,40 @@ public class PepesDisciples : Player {
 
 			foreach (var neighbor in neighbors) 
 			{
-				if (neighbor.color == Color.black) 
+				if (neighbor.color != cell.color && cell.resources > neighbor.resources) 
 				{
-					return new Tuple (cell, neighbor.resources+1, neighbor);
-				}
-				if (WeakestEnemy == null && neighbor.color != cell.color) 
+					possibleMoves.Add (new Tuple (cell, neighbor.resources + 1, neighbor));
+				} 
+				else if (neighbor.color == cell.color && neighbor.resources < 100) 
 				{
-					transferFrom = cell;
-					WeakestEnemy = neighbor;
-				}
-				else if (neighbor.color != cell.color) 
-				{
-					if (WeakestEnemy.resources > neighbor.resources) 
-					{
-						transferFrom = cell;
-						WeakestEnemy = neighbor;
-					}
+//					possibleMoves.Add (new Tuple (cell, cell.resources - 1, neighbor));	
 				}
 			}
 		}
 
-		return new Tuple (transferFrom, WeakestEnemy.resources + 1, WeakestEnemy);
+		List<Tuple> blacks = KeepBlacks (possibleMoves);
+
+		if (blacks.Count > 0) 
+		{
+			return blacks [Random.Range (0, possibleMoves.Count)];
+		}
+
+		return possibleMoves [Random.Range (0, possibleMoves.Count)];
 	}
+
+	public List<Tuple> KeepBlacks(List<Tuple> lst)
+	{
+		List<Tuple> blacks = new List<Tuple> ();
+
+		foreach (Tuple item in lst) 
+		{
+			if (item.TranserTo.color == Color.black) 
+			{
+				blacks.Add (item);
+			}
+		}
+
+		return blacks;
+	}
+
 }

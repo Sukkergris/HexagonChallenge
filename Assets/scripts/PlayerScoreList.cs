@@ -60,7 +60,9 @@ public class PlayerScoreList : MonoBehaviour
 			GameObject go = (GameObject)Instantiate (playerEntryPrefab);
 			go.transform.SetParent (this.transform);
 			go.transform.Find ("Name").GetComponent<Text> ().text = player.ToString ();
-			go.transform.Find ("Resources").GetComponent<Text> ().text = scoreboard.GetScore (player).ToString();
+			go.transform.Find ("Resources").GetComponent<Text> ().text = scoreboard.GetScore (player).ToString ();
+			go.transform.Find ("Hexagons").GetComponent<Text> ().text = scoreboard.GetHexagons (player).ToString ();
+			go.transform.Find ("Bugs").GetComponent<Text> ().text = scoreboard.GetBugs (player).ToString ();
 			go.transform.GetComponent<Image> ().color = player.color;
 			playerScores.Add (new GoPlayerTuple(go, player));
 		}

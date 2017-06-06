@@ -31,6 +31,6 @@ public class RandomStrat : Player {
 			}
 		}
 
-		return possibleMoves [Random.Range (0, possibleMoves.Count - 1)];
+		return possibleMoves [Random.Range (0, possibleMoves.Count)];
 	}
 }

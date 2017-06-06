@@ -30,7 +30,9 @@ public class RandomStrat1 : Player {
 				}
 			}
 		}
-
-		return possibleMoves [Random.Range (0, possibleMoves.Count - 1)];
+//		if (possibleMoves.Count > 0) 
+//		{
+		return possibleMoves [Random.Range (0, possibleMoves.Count)];	
+//		}
 	}
 }
